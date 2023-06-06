@@ -220,8 +220,9 @@ const loginpage = () => {
     }
 
     try {
+      const {birthday,comment,email,lastname,name,phone,photo,privatecomment,rol} = sendDatada
      const docRef = await setDoc(doc(usersCollection, newUser.email), {
-           sendDatada
+      birthday,comment,email,lastname,name,phone,photo,privatecomment,rol
          });
          
          console.log("Document written with ID: ", docRef);

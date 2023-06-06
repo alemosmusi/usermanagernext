@@ -7,10 +7,13 @@ import { collection, addDoc, getDocs, doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { useAuth } from "@/context/AuthContext";
 import { Tabla } from "@/components/tabla";
+import Swal from 'sweetalert2'
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const usersCollection = collection(db, "users")
   const { login, signup, currentUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +22,7 @@ export default function Home() {
 
   useEffect(() => {
     getData();
+    
   }, []);
 
   const getData = async () => {
@@ -26,23 +30,23 @@ export default function Home() {
     const querySnapshot = await getDocs(collection(db, "users"));
 
     querySnapshot.forEach((doc, index) => {
-      if (doc.data().sendDatada) {
-        usuarios.push(doc.data().sendDatada);
+      if (doc.data()) {
+        usuarios.push(doc.data());
       }
-      if (doc.data().sendDatada) {
-        usuarios.push(doc.data().sendDatada);
+      if (doc.data()) {
+        usuarios.push(doc.data());
       }
-      if (doc.data().sendDatada) {
-        usuarios.push(doc.data().sendDatada);
+      if (doc.data()) {
+        usuarios.push(doc.data());
       }
-      if (doc.data().sendDatada) {
-        usuarios.push(doc.data().sendDatada);
+      if (doc.data()) {
+        usuarios.push(doc.data());
       }
-      if (doc.data().sendDatada) {
-        usuarios.push(doc.data().sendDatada);
+      if (doc.data()) {
+        usuarios.push(doc.data());
       }
-      if (doc.data().sendDatada) {
-        usuarios.push(doc.data().sendDatada);
+      if (doc.data()) {
+        usuarios.push(doc.data());
       }
     });
     setUsers(usuarios);
@@ -99,13 +103,25 @@ export default function Home() {
       
   };
 
-  const changeAdmin = (e,i)=>{
+  const changeAdmin = async (e,i)=>{
+
+    var cambiarAdm = {}
     setUsersF((prevUsersF) => {
       const updatedUsersF = [...prevUsersF];
       updatedUsersF[i] = { ...updatedUsersF[i], rol: e.target.checked ? 1 : 2 };
+      cambiarAdm = updatedUsersF[i];
       return updatedUsersF;
     });
-    console.log(i);
+        try {
+          const { birthday,comment,email,lastname,name,phone,photo,privatecomment,rol } = cambiarAdm;
+
+              const docRef = await setDoc(doc(usersCollection, cambiarAdm.email), { birthday,comment,email,lastname,name,phone,photo,privatecomment,rol }
+              );
+              Swal.fire('cambiado con exito');
+            } catch (e) {
+              console.error("Error adding document: ", e);
+            }
+    
   }
 
   //   // const proyectos = useSelector((state) => state.Proyectos)
@@ -236,7 +252,7 @@ export default function Home() {
                                 placeholder="checkbox"
                                 type="checkbox"
                                 checked={u.rol && u.rol === 1 ? true : false}
-                                disabled={true}
+                                disabled={false}
                                 onChange={(e)=>changeAdmin(e,i)}
                               />
                             </div>
@@ -244,9 +260,9 @@ export default function Home() {
                         </td>
                         <td class="">
                           <div class="flex items-center pl-5">
-                            <p class="text-base font-medium leading-none text-gray-700 mr-2">
+                            <Link href={`/adminuser?email=${u.email}`} class="text-base font-medium leading-none text-gray-700 mr-2">
                               {u.name} {u.lastname}
-                            </p>
+                            </Link>
                           </div>
                         </td>
                         <td class="pl-5">
@@ -285,7 +301,8 @@ export default function Home() {
                               viewBox="0 0 64 64"
                               xmlns="http://www.w3.org/2000/svg"
                               xmlnsXlink="http://www.w3.org/1999/xlink"
-                              className="w-8 h-8"
+                              className="w-8 h-8 cursor-pointer"
+                              onClick={()=>Swal.fire(u.comment)}
                             >
                               <path
                                 d="M63.1 30.9C62.6 30.1 50 12.5 32 12.5S1.4 30.1.9 30.9L.1 32l.8 1.1c.5.8 13.1 18.4 31.1 18.4s30.6-17.6 31.1-18.4l.8-1.1zM32 47.5C18.5 47.5 8 35.8 5 32c3-3.8 13.5-15.5 27-15.5S56 28.2 59 32c-3 3.8-13.5 15.5-27 15.5z"
@@ -309,7 +326,8 @@ export default function Home() {
                               viewBox="0 0 64 64"
                               xmlns="http://www.w3.org/2000/svg"
                               xmlnsXlink="http://www.w3.org/1999/xlink"
-                              className="w-8 h-8"
+                              className={false? "w-8 h-8 cursor-pointer":"w-8 h-8"}
+                              onClick={()=>false?Swal.fire(u.privatecomment):""}
                             >
                               <path
                                 d="M63.1 30.9C62.6 30.1 50 12.5 32 12.5S1.4 30.1.9 30.9L.1 32l.8 1.1c.5.8 13.1 18.4 31.1 18.4s30.6-17.6 31.1-18.4l.8-1.1zM32 47.5C18.5 47.5 8 35.8 5 32c3-3.8 13.5-15.5 27-15.5S56 28.2 59 32c-3 3.8-13.5 15.5-27 15.5z"
