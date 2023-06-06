@@ -1,1 +1,1 @@
-export const GET_PROYECTOS = "GET_PROYECTOS";
+export const NEW_USER = "NEW_USER";
