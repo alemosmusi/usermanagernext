@@ -83,7 +83,6 @@ export default function Home() {
       const slicedUsers = users.slice(min, max);
       
       setUsersF(slicedUsers);
-      console.log(slicedUsers)
       
   };
   const pageUser1 = () => {
@@ -99,6 +98,15 @@ export default function Home() {
       setUsersF(slicedUsers);
       
   };
+
+  const changeAdmin = (e,i)=>{
+    setUsersF((prevUsersF) => {
+      const updatedUsersF = [...prevUsersF];
+      updatedUsersF[i] = { ...updatedUsersF[i], rol: e.target.checked ? 1 : 2 };
+      return updatedUsersF;
+    });
+    console.log(i);
+  }
 
   //   // const proyectos = useSelector((state) => state.Proyectos)
   //   // const dispatch = useDispatch()
@@ -227,7 +235,9 @@ export default function Home() {
                               <input
                                 placeholder="checkbox"
                                 type="checkbox"
-                                checked={u.rol === 1 ? true : false}
+                                checked={u.rol && u.rol === 1 ? true : false}
+                                disabled={true}
+                                onChange={(e)=>changeAdmin(e,i)}
                               />
                             </div>
                           </div>
