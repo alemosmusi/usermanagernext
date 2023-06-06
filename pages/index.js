@@ -15,6 +15,7 @@ export default function Home() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersF, setUsersF] = useState([]);
+  const [search, setSearch] = useState([])
 
   useEffect(() => {
     getData();
@@ -49,11 +50,27 @@ export default function Home() {
 
   useEffect(() => {
     filterUser();
-  }, [users,currentPage]);
+  }, [users,currentPage,search]);
 
   const filterUser = () => {
-    pageUser();
+    if(search.length > 0){
+
+      pageUser1();
+    }else{
+      
+      pageUser();
+    }
   };
+
+  const inputSearch = (e)=>{
+    const searchTerm = e.target.value
+    
+    const results = users.filter((user) => {
+      const fullName = `${user.name} ${user.lastname}`;
+      return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    setSearch(results)
+  }
 
   const pageUser = () => {
     var min = 0;
@@ -62,9 +79,25 @@ export default function Home() {
       min = (currentPage - 1) * 5;
       max = currentPage * 5;
     }
-
-    const slicedUsers = users.slice(min, max);
-    setUsersF(slicedUsers);
+    
+      const slicedUsers = users.slice(min, max);
+      
+      setUsersF(slicedUsers);
+      console.log(slicedUsers)
+      
+  };
+  const pageUser1 = () => {
+    var min = 0;
+    var max = 5;
+    if (currentPage !== 1) {
+      min = (currentPage - 1) * 5;
+      max = currentPage * 5;
+    }
+    
+      const slicedUsers = search.slice(min, max);
+      
+      setUsersF(slicedUsers);
+      
   };
 
   //   // const proyectos = useSelector((state) => state.Proyectos)
@@ -106,56 +139,16 @@ export default function Home() {
     <main
     // className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
+      
       <div class="sm:px-6 w-full">
-        <div class="px-4 md:px-10 py-4 md:py-7">
-          <div class="flex items-center justify-between">
-            <p
-              tabindex="0"
-              class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800"
-            >
-              Tasks
-            </p>
-            <div class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
-              <p>Sort By:</p>
-              <select
-                aria-label="select"
-                class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
-              >
-                <option class="text-sm text-indigo-800">Latest</option>
-                <option class="text-sm text-indigo-800">Oldest</option>
-                <option class="text-sm text-indigo-800">Latest</option>
-              </select>
-            </div>
-          </div>
-        </div>
+        
         <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
           <div class="sm:flex items-center justify-between">
-            <div class="flex items-center">
-              <a
-                class="rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800"
-                href=" javascript:void(0)"
-              >
-                <div class="py-2 px-8 bg-indigo-100 text-indigo-700 rounded-full">
-                  <p>All</p>
-                </div>
-              </a>
-              <a
-                class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8"
-                href="javascript:void(0)"
-              >
-                <div class="py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">
-                  <p>Done</p>
-                </div>
-              </a>
-              <a
-                class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8"
-                href="javascript:void(0)"
-              >
-                <div class="py-2 px-8 text-gray-600 hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">
-                  <p>Pending</p>
-                </div>
-              </a>
-            </div>
+          <div>
+            <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required
+            onChange={inputSearch}
+            />
+        </div>
           </div>
           <div class="mt-7 overflow-x-auto">
             <table class="w-full whitespace-nowrap">
@@ -234,7 +227,7 @@ export default function Home() {
                               <input
                                 placeholder="checkbox"
                                 type="checkbox"
-                                defaultChecked={u.rol === 1 ? true : false}
+                                checked={u.rol === 1 ? true : false}
                               />
                             </div>
                           </div>
