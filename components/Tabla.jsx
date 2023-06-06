@@ -1,107 +1,8 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
-import { getProyectos } from '@/redux/actions'
-import { collection, addDoc, getDocs, doc, setDoc } from "firebase/firestore";
-import {db} from '@/firebase/firebaseConfig'
-import { useAuth } from '@/context/AuthContext'
-import {Tabla} from '@/components/tabla'
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
-
-
-  const { login, signup, currentUser } = useAuth();
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-      getData()
-  
-  }, [])
-  
-
-  const getData = async ()=>{
-    const usuarios = []
-    const querySnapshot = await getDocs(collection(db, "users"));
-    
-    querySnapshot.forEach((doc)=>{
-      if(doc.data().sendDatada){
-        usuarios.push(doc.data().sendDatada)
-      }
-    })
-    setUsers(usuarios)
-  }
-
-console.log(users)
-
-//   // const proyectos = useSelector((state) => state.Proyectos)
-//   // const dispatch = useDispatch()
-//   const usersCollection = collection(db, "users");
-
-// // Definir el ID personalizado para el documento
-// const documentoId = "tuIdPersonalizado";
-
-//   useEffect(() => {
-//     const obtenerdatos = async ()=>{
-//       const querySnapshot = await getDocs(collection(db, "users"));
-//       // console.log(querySnapshot[0].id)
-//       // querySnapshot.forEach((doc) => {
-//       //   console.log(`${doc.id} => ${doc.data()}`);
-//       // });
-//       try {
-        
-//         const docRef = await setDoc(doc(usersCollection, documentoId), {
-//           first: "Ada",
-//           last: "Lovelace",
-//           born: 1814
-//         });
-//         console.log("Document written with ID: ", docRef);
-//       } catch (e) {
-//         console.error("Error adding document: ", e);
-//       }
-//       // querySnapshot.forEach((doc) => {
-//       //   console.log(doc.data());
-//       // });
-//     }
-    
-//     obtenerdatos()
-//   }, [])
-  
-//   // console.log(proyectos)
-
-  
-
-
+export const Tabla = () => {
   return (
-    <main
-      // className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <div class="sm:px-6 w-full">
+    <div class="sm:px-6 w-full">
       <div class="px-4 md:px-10 py-4 md:py-7">
         <div class="flex items-center justify-between">
           <p
@@ -168,15 +69,14 @@ console.log(users)
             <p class="text-base font-medium leading-none text-gray-700 mr-2">Admin</p>
           </div>
         </th>
-        <th class="pl-5">
-          {/* <div class="flex items-center"> */}
-          <div class="flex">
-            <p class="text-sm leading-none text-gray-600">Name and Lastname</p>
+        <th class="pl-24">
+          <div class="flex items-center">
+            <p class="text-sm leading-none text-gray-600 ml-2">Name and Lastname</p>
           </div>
         </th>
         <th class="pl-5">
           <div class="flex items-center">
-            <p class="text-sm leading-none text-gray-600 ">Email</p>
+            <p class="text-sm leading-none text-gray-600 ml-2">Email</p>
           </div>
         </th>
         <th class="pl-5">
@@ -211,66 +111,173 @@ console.log(users)
 
 
             <tbody>
-            
-              {users && users.length >0?
-              users.map((u,i)=>
+              
               <tr
                 tabindex="0"
                 class="focus:outline-none h-16 border border-gray-100 rounded"
-                key={i}
               >
-              <td key={i}><div class="ml-5 flex justify-center">
-                    {/* <div class="rounded-sm w-5 h-5 flex flex-shrink-0 justify-center items-center relative"> */}
-                    <div class="rounded-sm w-5 h-5 flex flex-shrink-0 items-center relative">
+                <td>
+                  <div class="ml-5">
+                    <div class="bg-gray-200 rounded-sm w-5 h-5 flex flex-shrink-0 justify-center items-center relative">
                       <input
                         placeholder="checkbox"
                         type="checkbox"
-                        defaultChecked={u.rol === 1 ? true : false}
+                        class="focus:opacity-100 checkbox opacity-0 absolute cursor-pointer w-full h-full"
                       />
+                      <div class="check-icon hidden bg-indigo-700 text-white rounded-sm">
+                        <svg
+                          class="icon icon-tabler icon-tabler-check"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z"></path>
+                          <path d="M5 12l5 5l10 -10"></path>
+                        </svg>
+                      </div>
                     </div>
-                  </div></td>
-                  <td class="">
+                  </div>
+                </td>
+                <td class="">
                   <div class="flex items-center pl-5">
                     <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                      {u.name} {u.lastname}
+                      Nombre y apellidos
                     </p>
                   </div>
                 </td>
-                <td class="pl-5">
-                  
+                <td class="pl-24">
+                  <div class="flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                    >
+                      <path
+                        d="M9.16667 2.5L16.6667 10C17.0911 10.4745 17.0911 11.1922 16.6667 11.6667L11.6667 16.6667C11.1922 17.0911 10.4745 17.0911 10 16.6667L2.5 9.16667V5.83333C2.5 3.99238 3.99238 2.5 5.83333 2.5H9.16667"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <circle
+                        cx="7.50004"
+                        cy="7.49967"
+                        r="1.66667"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></circle>
+                    </svg>
                     <p class="text-sm leading-none text-gray-600 ml-2">
-                      {u.email}
+                      Urgents
                     </p>
-                </td>
-                <td class="pl-5">
-                  <div class="flex items-center">                    
-                    <p class="text-sm leading-none text-gray-600 ml-2">{u.birthday}</p>
                   </div>
                 </td>
                 <td class="pl-5">
                   <div class="flex items-center">
-                    <p class="text-sm leading-none text-gray-600 ml-2">{u.phone}</p>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                    >
+                      <path
+                        d="M7.5 5H16.6667"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M7.5 10H16.6667"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M7.5 15H16.6667"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M4.16669 5V5.00667"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M4.16669 10V10.0067"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M4.16669 15V15.0067"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </svg>
+                    <p class="text-sm leading-none text-gray-600 ml-2">04/07</p>
                   </div>
                 </td>
                 <td class="pl-5">
                   <div class="flex items-center">
-                    <img src={u.photo} className='w-10 h-10 rounded-full'></img>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                    >
+                      <path
+                        d="M3.33331 17.4998V6.6665C3.33331 6.00346 3.59671 5.36758 4.06555 4.89874C4.53439 4.4299 5.17027 4.1665 5.83331 4.1665H14.1666C14.8297 4.1665 15.4656 4.4299 15.9344 4.89874C16.4033 5.36758 16.6666 6.00346 16.6666 6.6665V11.6665C16.6666 12.3295 16.4033 12.9654 15.9344 13.4343C15.4656 13.9031 14.8297 14.1665 14.1666 14.1665H6.66665L3.33331 17.4998Z"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M10 9.1665V9.17484"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M6.66669 9.1665V9.17484"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M13.3333 9.1665V9.17484"
+                        stroke="#52525B"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </svg>
+                    <p class="text-sm leading-none text-gray-600 ml-2">23</p>
                   </div>
                 </td>
-              </tr>
-              
-              
-              )
-                
-                
-              
-              :""}
-              <tr
-                tabindex="0"
-                class="focus:outline-none h-16 border border-gray-100 rounded"
-              >
-                
-                
                 <td class="pl-5">
                   <div class="flex items-center">
                     <svg
@@ -363,36 +370,5 @@ console.log(users)
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      {/* <Tabla></Tabla> */}
-    </main>
-  )
-}
+  );
+};

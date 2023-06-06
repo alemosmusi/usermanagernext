@@ -4,14 +4,16 @@ import { AuthContext, useAuth } from "../../context/AuthContext";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { useDispatch } from "react-redux";
 import { collection, doc, setDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
 
 const loginpage = () => {
   const dispatch = useDispatch()
+  const router = useRouter();
   const usersCollection = collection(db, "users");
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [botonSignup, setBotonSignup] = useState(true);
+  const [botonSignup, setBotonSignup] = useState(false);
 
   const { login, signup, currentUser } = useAuth();
 
@@ -24,7 +26,7 @@ const loginpage = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        router.push('/');
       })
       .catch((error) => {
         setError(true);
@@ -203,18 +205,39 @@ const loginpage = () => {
 
   }
   const cargaDatos = async ()=>{
+
+    const sendDatada = {
+      rol: 2,
+      email: newUser.email,
+      name:newUser.name,
+      lastname:newUser.lastname,
+      phone:newUser.phone,
+      photo:newUser.photo || "https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png",
+      birthday:newUser.birthday,
+      comment:newUser.comment || "",
+      privatecomment:newUser.privatecomment || ""
+
+    }
+
     try {
      const docRef = await setDoc(doc(usersCollection, newUser.email), {
-           newUser
+           sendDatada
          });
+         
          console.log("Document written with ID: ", docRef);
+         router.push('/');
        } catch (e) {
          console.error("Error adding document: ", e);
        }
   }
+
+
+
+  const [loading, setLoading] = useState(false)
   
-  useEffect(() => {
+  useEffect(() => {    
     if(noErrors){
+      setLoading(true)
     cargaDatos()}
   }, [currentUser])
   
@@ -466,13 +489,19 @@ const loginpage = () => {
                       onChange={handleInput}
                     />
                   </div>
-                  {noErrors ? 
-                  <button className="g-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onClick={sendSubmit}>
-                    Sign in
-                  </button>
-                  :
-                  ""
-                  
+
+                  {loading? 
+                  <h2>LOADING...</h2>
+                :
+                noErrors ? 
+                <button className="g-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onClick={sendSubmit}>
+                  Sign up
+                </button>
+                :
+                ""
+                
+              
+                
                 }
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     I already have an account{" "}
@@ -482,7 +511,7 @@ const loginpage = () => {
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                       onClick={() => setBotonSignup(false)}
                     >
-                      Submit
+                      Sign in
                     </button>
                   </p>
                 </div>
@@ -495,21 +524,7 @@ const loginpage = () => {
   } else {
     return (
       <div className="login">
-        {/* <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Login</button>
-          {error && <span>Wrong email or password!</span>}
-        </form> */}
-
+        
         <section className="bg-gray-50 dark:bg-gray-900">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
