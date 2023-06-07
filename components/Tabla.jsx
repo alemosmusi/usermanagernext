@@ -100,6 +100,7 @@ const changeAdmin = async (e,i)=>{
             const docRef = await setDoc(doc(usersCollection, cambiarAdm.email), { birthday,comment,email,lastname,name,phone,photo,privatecomment,rol }
             );
             Swal.fire('cambiado con exito');
+            getData()
           } catch (e) {
             Swal.fire("Error adding document: ", e);
           }
@@ -308,7 +309,7 @@ return (
         <p className="text-sm font-medium leading-none text-white">{"<"}</p>
       </button>
         :""}
-      {usersF.length >= 5?
+      {usersF.length > 5?
       <button
       onClick={()=>setCurrentPage(currentPage+1)}
       className="mx-2 my-4 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded"

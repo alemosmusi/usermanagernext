@@ -1,5 +1,5 @@
+import { Tabla } from "@/components/Tabla";
 import { Inter } from "next/font/google";
-import { Tabla } from "@/components/tabla";
 
 const inter = Inter({ subsets: ["latin"] });
 
