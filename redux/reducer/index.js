@@ -1,7 +1,7 @@
 import * as actionTypes from "../action-types/";
 
 const initialState = {
-  Proyectos: [],
+  UserLog: {},
 };
 
 
@@ -9,10 +9,10 @@ const rootReducer = (state = initialState, action) => {
 
 
   switch (action.type) {
-    case actionTypes.GET_PROYECTOS:
+    case actionTypes.USER_LOG:
       return {
         ...state,
-        Proyectos: action.payload,
+        UserLog: action.payload,
       };
 
     default:
