@@ -28,21 +28,6 @@ const getData = async () => {
     if (doc.data()) {
       usuarios.push(doc.data());
     }
-    if (doc.data()) {
-      usuarios.push(doc.data());
-    }
-    if (doc.data()) {
-      usuarios.push(doc.data());
-    }
-    if (doc.data()) {
-      usuarios.push(doc.data());
-    }
-    if (doc.data()) {
-      usuarios.push(doc.data());
-    }
-    if (doc.data()) {
-      usuarios.push(doc.data());
-    }
   });
   setUsers(usuarios);
 };
@@ -333,6 +318,12 @@ return (
       
       
       :""}
+      <Link
+      href="../createuser"
+      className="mx-2 my-4 focus:ring-2 focus:ring-offset-2 focus:ring-green-600 inline-flex items-start justify-start px-6 py-3 bg-green-700 hover:bg-green-600 focus:outline-none rounded"
+    >
+      <p className="text-sm font-medium leading-none text-white">CREAR</p>
+    </Link>
         
         
 
